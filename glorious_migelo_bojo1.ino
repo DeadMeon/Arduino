@@ -1,50 +1,36 @@
-#include <Adafruit_NeoPixel.h>
+/*
+  décrivez votre code ici
+*/
 
-#define PIN 2	 // input pin Neopixel is attached to
+int up = 0;
 
-#define NUMPIXELS      12 // number of neopixels in Ring
-
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
-
-int delayval = 10; // timing delay
-
-int redColor = 0;
-int greenColor = 0;
-int blueColor = 0;
-
-void setup() {
-  pixels.begin(); // Initializes the NeoPixel library.
-//  Serial.begin(9600);
+void setup()
+{
+  pinMode(11, OUTPUT);
+  pinMode(4, INPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
 }
 
-void loop() {
-  setColor();
-
-  for(int i=0;i<NUMPIXELS;i++){
-
-    
-    pixels.setPixelColor(i, pixels.Color(redColor, greenColor, blueColor)); 
-    pixels.show(); 
-    if (i == NUMPIXELS){
-    	i = 0; // start all over again!
-        setColor();
-	}
+void loop()
+{
+  digitalWrite(11, HIGH);
+  if (digitalRead(4) == HIGH) {
+    digitalWrite(11, LOW);
+    if (up == 1) {
+      // La chaise descant
+      digitalWrite(7, HIGH);
+      delay(5000); // Wait for 5000 millisecond(s)
+      digitalWrite(7, LOW);
+      up = 0;
+      delay(1000); // Wait for 1000 millisecond(s)
+    } else {
+      // La chaise monte
+      digitalWrite(8, HIGH);
+      delay(5000); // Wait for 5000 millisecond(s)
+      digitalWrite(8, LOW);
+      up = 1;
+      delay(1000); // Wait for 1000 millisecond(s)
+    }
   }
-  delay(delayval);
-}
-
-// setColor()
-// picks random values to set for RGB
-
-void setColor(){
-  redColor = random(0, 255);
-  greenColor = random(0,255);
-  blueColor = random(0, 255);
-  Serial.print("red: ");
-  Serial.println(redColor);
-  Serial.print("green: ");
-  Serial.println(greenColor);
-  Serial.print("blue: ");
-  Serial.println(blueColor);
-  
 }
