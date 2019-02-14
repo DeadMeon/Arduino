@@ -1,36 +1,26 @@
-/*
-  décrivez votre code ici
-*/
+#include <Servo.h>
 
-int up = 0;
+boolean direction = 0;
 
-void setup()
-{
-  pinMode(11, OUTPUT);
-  pinMode(4, INPUT);
-  pinMode(7, OUTPUT);
-  pinMode(8, OUTPUT);
+Servo servo_4;
+
+void setup() {
+  pinMode(2, INPUT);
+  servo_4.attach(4);
 }
 
-void loop()
-{
-  digitalWrite(11, HIGH);
-  if (digitalRead(4) == HIGH) {
-    digitalWrite(11, LOW);
-    if (up == 1) {
-      // La chaise descant
-      digitalWrite(7, HIGH);
-      delay(5000); // Wait for 5000 millisecond(s)
-      digitalWrite(7, LOW);
-      up = 0;
-      delay(1000); // Wait for 1000 millisecond(s)
-    } else {
-      // La chaise monte
-      digitalWrite(8, HIGH);
-      delay(5000); // Wait for 5000 millisecond(s)
-      digitalWrite(8, LOW);
-      up = 1;
-      delay(1000); // Wait for 1000 millisecond(s)
-    }
+void loop() {
+  if (digitalRead(2) && direction == 0) {
+    servo_4.write(180);
+    delay(5*1000);
+    servo_4.write(90);
+    direction = 1;
+  } else if (digitalRead(2) && direction == 1) {
+    servo_4.write(0);
+    delay(5*1000);
+    servo_4.write(90);
+    direction = 0;
   }
+  delay(5*1000);
+
 }
